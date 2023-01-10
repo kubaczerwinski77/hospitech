@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { Box, Button, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import NavigationBar from "./components/NavigationBar";
+import Schedule from "./components/schedule/Schedule";
+import { BASE_URL, PREFIX } from "./config";
 
 function App() {
+  const [data, setData] = useState();
+
+  const fetchData = async () => {
+    const response = await fetch(`${BASE_URL}${PREFIX}/courses`);
+    const data = await response.json();
+    setData(data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavigationBar />
+      <Schedule />
+      {/* <Box>
+        <Button onClick={() => fetchData()}>API</Button>
+        {data ? <Text>{data}</Text> : <Text>No data</Text>}
+      </Box> */}
+    </>
   );
 }
 
