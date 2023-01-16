@@ -1,26 +1,15 @@
-import { Box, Button, Text } from "@chakra-ui/react";
-import { useState } from "react";
-import NavigationBar from "./components/NavigationBar";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Schedule from "./components/schedule/Schedule";
-import { BASE_URL, PREFIX } from "./config";
+import NavigationBar from "./components/NavigationBar";
 
 function App() {
-  const [data, setData] = useState();
-
-  const fetchData = async () => {
-    const response = await fetch(`${BASE_URL}${PREFIX}/courses`);
-    const data = await response.json();
-    setData(data);
-  };
-
   return (
     <>
       <NavigationBar />
-      <Schedule />
-      {/* <Box>
-        <Button onClick={() => fetchData()}>API</Button>
-        {data ? <Text>{data}</Text> : <Text>No data</Text>}
-      </Box> */}
+      <Routes>
+        <Route path="/schedule" element={<Schedule />} />
+        <Route path="*" element={<Navigate to="/schedule" replace />} />
+      </Routes>
     </>
   );
 }
