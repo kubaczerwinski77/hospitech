@@ -2,6 +2,7 @@ package hospitech.entity;
 
 import hospitech.entity.enums.DayOfTheWeek;
 import hospitech.entity.enums.ModeOfStudies;
+import hospitech.entity.enums.StudiesDegree;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -28,8 +29,7 @@ public class UniversityClass {
     @Enumerated(EnumType.STRING)
     private DayOfTheWeek dayOfTheWeek;
     private String semester;
-    // I stopien II stopien, doktoranckie, Szkola Doktorska, podyplomowe
-    private String degree;
+    private StudiesDegree studiesDegree;
     private ModeOfStudies modeOfStudies;
 
 }
