@@ -1,11 +1,15 @@
 package hospitech.entity;
 
+import hospitech.entity.enums.DayOfTheWeek;
+import hospitech.entity.enums.ModeOfStudies;
+import hospitech.entity.enums.StudiesDegree;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-// TODO Daty i godziny
+import java.time.LocalTime;
+
 
 @Data
 @Entity
@@ -20,4 +24,12 @@ public class UniversityClass {
     @JoinColumn(name = "course_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    @Enumerated(EnumType.STRING)
+    private DayOfTheWeek dayOfTheWeek;
+    private String semester;
+    private StudiesDegree studiesDegree;
+    private ModeOfStudies modeOfStudies;
+
 }
