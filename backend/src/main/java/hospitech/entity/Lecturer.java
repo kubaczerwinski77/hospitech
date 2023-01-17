@@ -15,5 +15,6 @@ public class Lecturer {
     private String lastName;
     @Enumerated(EnumType.STRING)
     private Degree degree;
+    private boolean isInWZHZ;
 
 }

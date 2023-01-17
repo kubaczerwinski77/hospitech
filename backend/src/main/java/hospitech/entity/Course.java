@@ -1,5 +1,6 @@
 package hospitech.entity;
 
+import hospitech.entity.enums.CourseType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,4 +14,6 @@ public class Course {
     private String name;
     @Column(unique = true)
     private String code;
+    @Enumerated(EnumType.STRING)
+    private CourseType courseType;
 }
