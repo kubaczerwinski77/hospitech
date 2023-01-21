@@ -1,10 +1,12 @@
 package hospitech.entity;
 
+import hospitech.dto.UniversityClassDTO;
 import hospitech.entity.enums.DayOfTheWeek;
 import hospitech.entity.enums.ModeOfStudies;
 import hospitech.entity.enums.StudiesDegree;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,6 +14,7 @@ import java.time.LocalTime;
 
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "classes")
 public class UniversityClass {
@@ -32,4 +35,17 @@ public class UniversityClass {
     private StudiesDegree studiesDegree;
     private ModeOfStudies modeOfStudies;
 
+    public UniversityClass(String building, String room, Course course, LocalTime startTime, LocalTime endTime, DayOfTheWeek dayOfTheWeek, String semester) {
+        this.building = building;
+        this.room = room;
+        this.course = course;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.dayOfTheWeek = dayOfTheWeek;
+        this.semester = semester;
+    }
+
+    public UniversityClassDTO toDTO() {
+        return new UniversityClassDTO(classId, building, room, course.getCode(), startTime, endTime, dayOfTheWeek, semester);
+    }
 }
