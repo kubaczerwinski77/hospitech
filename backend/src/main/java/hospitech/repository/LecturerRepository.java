@@ -1,9 +1,11 @@
 package hospitech.repository;
 
 import hospitech.entity.Lecturer;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@RepositoryRestResource(path = "lecturers")
-public interface LecturerRepository extends CrudRepository<Lecturer, Integer> {
+import java.util.List;
+
+public interface LecturerRepository extends JpaRepository<Lecturer, Integer> {
+
+    List<Lecturer> findByIsInWZHZTrue();
 }

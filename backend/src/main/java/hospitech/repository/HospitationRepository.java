@@ -1,9 +1,7 @@
 package hospitech.repository;
 
 import hospitech.entity.Hospitation;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@RepositoryRestResource(path = "hospitations")
-public interface HospitationRepository extends CrudRepository<Hospitation, Integer> {
+public interface HospitationRepository extends JpaRepository<Hospitation, Integer> {
 }
