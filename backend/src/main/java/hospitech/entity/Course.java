@@ -1,5 +1,6 @@
 package hospitech.entity;
 
+import hospitech.dto.CourseDTO;
 import hospitech.entity.enums.CourseType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,4 +21,8 @@ public class Course {
     private String code;
     @Enumerated(EnumType.STRING)
     private CourseType courseType;
+
+    public CourseDTO toDTO() {
+        return new CourseDTO(courseId, name, code, courseType);
+    }
 }

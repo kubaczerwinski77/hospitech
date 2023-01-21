@@ -18,20 +18,26 @@ public class LecturerService {
         this.lecturerRepository = lecturerRepository;
     }
 
-    public List<Lecturer> getLecturersInWZHZ() {
-        return lecturerRepository.findByIsInWZHZTrue();
+    public List<Lecturer> getLecturers(boolean isInWZHZ) {
+        if (isInWZHZ) {
+            return lecturerRepository.findByIsInWZHZTrue();
+        }
+        return lecturerRepository.findAll();
     }
 
     public List<UniversityClass> getLecturersClasses(int lecturerId, String semester) {
-        var lecturer = lecturerRepository.findById(lecturerId)
-                .orElseThrow(
-                        () -> new ResponseStatusException(
-                                HttpStatus.NOT_FOUND,
-                                String.format("Lecturer with id '%d' doesn't exist", lecturerId))
-                );
+        var lecturer = getLecturerByIdOrThrowException(lecturerId);
         return lecturer.getClasses()
                 .stream()
                 .filter(uniClass -> uniClass.getSemester().equals(semester))
                 .toList();
+    }
+
+    public Lecturer getLecturerByIdOrThrowException(int lecturerId) {
+        return lecturerRepository.findById(lecturerId).orElseThrow(
+                () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Lecturer with id '%d' doesn't exist", lecturerId))
+        );
     }
 }

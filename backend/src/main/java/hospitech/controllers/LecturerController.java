@@ -5,6 +5,7 @@ import hospitech.dto.UniversityClassDTO;
 import hospitech.entity.Lecturer;
 import hospitech.entity.UniversityClass;
 import hospitech.services.LecturerService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +20,22 @@ public class LecturerController {
         this.lecturerService = lecturerService;
     }
 
-    @GetMapping("/wzhz")
-    public ResponseEntity<List<LecturerDTO>> getLecturersInWZHZ() {
+    @GetMapping
+    @Operation(summary = "Get lecturers", description = "Get all lecturers or only the ones in WZHZ")
+    public ResponseEntity<List<LecturerDTO>> getLecturersInWZHZ(
+            @RequestParam(value = "wzhz", defaultValue = "false", required = false) boolean isInWZHZ) {
         return ResponseEntity.ok(
-                lecturerService.getLecturersInWZHZ()
+                lecturerService.getLecturers(isInWZHZ)
                         .stream()
                         .map(Lecturer::toDTO)
                         .toList());
     }
 
     @GetMapping("/{lecturerId}/classes")
+    @Operation(summary = "Get lecturer's classes",
+            description = """
+                    Get lecturer's classes from given semester.
+                    \nReturns 404 if lecturer with given id doesn't exist""")
     public ResponseEntity<List<UniversityClassDTO>> getLecturersClasses(@PathVariable int lecturerId, @RequestParam("semester") String semester) {
         return ResponseEntity.ok(
                 lecturerService.getLecturersClasses(lecturerId, semester)
