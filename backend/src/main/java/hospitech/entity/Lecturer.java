@@ -3,6 +3,7 @@ package hospitech.entity;
 import hospitech.dto.LecturerDTO;
 import hospitech.entity.enums.Degree;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "lecturers")
 public class Lecturer {

@@ -5,6 +5,7 @@ import hospitech.entity.enums.DayOfTheWeek;
 import hospitech.entity.enums.ModeOfStudies;
 import hospitech.entity.enums.StudiesDegree;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "classes")
 public class UniversityClass {

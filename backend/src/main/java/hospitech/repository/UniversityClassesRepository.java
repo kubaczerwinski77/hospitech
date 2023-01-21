@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UniversityClassesRepository extends JpaRepository<UniversityClass, Integer> {
+
+    UniversityClass findByClassId(final int classId);
 }
