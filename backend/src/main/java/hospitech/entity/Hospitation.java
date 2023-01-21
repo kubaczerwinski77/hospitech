@@ -2,10 +2,14 @@ package hospitech.entity;
 
 import hospitech.entity.enums.HospitationStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "hospitations")
 public class Hospitation {
     @Id
