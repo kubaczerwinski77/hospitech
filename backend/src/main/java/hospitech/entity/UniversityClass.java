@@ -48,6 +48,6 @@ public class UniversityClass {
     }
 
     public UniversityClassDTO toDTO() {
-        return new UniversityClassDTO(classId, building, room, course.getCode(), startTime, endTime, dayOfTheWeek, semester);
+        return new UniversityClassDTO(classId, building, room, course.toDTO(), startTime, endTime, dayOfTheWeek, semester);
     }
 }

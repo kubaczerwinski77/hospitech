@@ -13,8 +13,8 @@ public record UniversityClassDTO(
         String building,
         @Schema(description = "room in which classes are held", example = "333b")
         String room,
-        @Schema(description = "course code", example = "MAZ001100C")
-        String course,
+        @Schema(description = "course", example = "MAZ001100C")
+        CourseDTO course,
         @JsonFormat(pattern = "HH:mm")
         @Schema(description = "starting time of class", example = "13:15")
         LocalTime startTime,

@@ -17,13 +17,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class, SoftAssertionsExtension.class})
 class LecturerServiceTest {
@@ -38,11 +38,22 @@ class LecturerServiceTest {
 
     @Test
     void when_get_lecturers_in_wzhz_expect_lecturers_in_wzhz() {
-        when(lecturerRepository.findByIsInWZHZTrue()).thenReturn(getTestLecturersInWZHZ());
-        var lecturers = lecturerService.getLecturersInWZHZ();
+        when(lecturerRepository.findByIsInWZHZTrue()).thenReturn(getTestLecturers(true));
+        var lecturers = lecturerService.getLecturers(true);
 
         assertThat(lecturers).hasSize(3);
         verify(lecturerRepository).findByIsInWZHZTrue();
+        verify(lecturerRepository, never()).findAll();
+    }
+
+    @Test
+    void when_get_lecturers_in_wzhz_expect_all_lecturers() {
+        when(lecturerRepository.findAll()).thenReturn(getTestLecturers(false));
+        var lecturers = lecturerService.getLecturers(false);
+
+        assertThat(lecturers).hasSize(5);
+        verify(lecturerRepository).findAll();
+        verify(lecturerRepository, never()).findByIsInWZHZTrue();
     }
 
     @Test
@@ -78,20 +89,25 @@ class LecturerServiceTest {
         verify(lecturerRepository).findById(lecturerId);
     }
 
-    private List<Lecturer> getTestLecturersInWZHZ() {
-        return List.of(
+    private List<Lecturer> getTestLecturers(boolean inWZHZ) {
+        List<Lecturer> lecturers = new ArrayList<>(List.of(
                 new Lecturer("first name 1", "last name 1", Degree.DR, "department 1", true),
                 new Lecturer("first name 2", "last name 2", Degree.MGR, "department 1", true),
-                new Lecturer("first name 3", "last name 3", Degree.DR_HAB, "department 2", true)
-        );
+                new Lecturer("first name 3", "last name 3", Degree.DR_HAB, "department 2", true)));
+        if (!inWZHZ) {
+            lecturers.addAll(List.of(
+                    new Lecturer("first name 4", "last name 4", Degree.DR, "department 3", false),
+                    new Lecturer("first name 5", "last name 5", Degree.MGR, "department 3", false)));
+        }
+        return lecturers;
     }
 
     private Optional<Lecturer> getTestLecturerWithClasses(String semester) {
-        var lecturer = getTestLecturersInWZHZ().get(0);
+        var lecturer = getTestLecturers(false).get(0);
         lecturer.setClasses(List.of(
-                new UniversityClass("D-1", "329", new Course(), LocalTime.of(13, 15), LocalTime.of(15,0), DayOfTheWeek.MONDAY, semester),
-                new UniversityClass("D-2", "333b", new Course(), LocalTime.of(11, 15), LocalTime.of(13,0), DayOfTheWeek.TUESDAY, semester),
-                new UniversityClass("D-2", "333a", new Course(), LocalTime.of(13, 15), LocalTime.of(15,0), DayOfTheWeek.FRIDAY, semester)
+                new UniversityClass("D-1", "329", new Course(), LocalTime.of(13, 15), LocalTime.of(15, 0), DayOfTheWeek.MONDAY, semester),
+                new UniversityClass("D-2", "333b", new Course(), LocalTime.of(11, 15), LocalTime.of(13, 0), DayOfTheWeek.TUESDAY, semester),
+                new UniversityClass("D-2", "333a", new Course(), LocalTime.of(13, 15), LocalTime.of(15, 0), DayOfTheWeek.FRIDAY, semester)
         ));
         return Optional.of(lecturer);
     }
