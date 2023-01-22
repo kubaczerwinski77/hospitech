@@ -1,6 +1,5 @@
 package hospitech.services;
 
-import hospitech.dto.LecturerWithCoursesDTO;
 import hospitech.dto.NewHospitationDTO;
 import hospitech.entity.Hospitation;
 import hospitech.entity.Lecturer;
@@ -36,6 +35,7 @@ public class HospitationService {
         Lecturer hospitatedLecturer = lecturerService.getLecturerByIdOrThrowException(newHospitationDTO.hospitatedLecturer());
         throwExceptionIfLecturerHaveHospitationAlready(newHospitationDTO.hospitatedLecturer());
         Lecturer wzhzReviewer = lecturerService.getLecturerByIdOrThrowException(newHospitationDTO.wzhzReviewer());
+        throwExceptionIfWzhzReviewerIsNotInsideWzhz(wzhzReviewer);
         Lecturer secondReviewer = lecturerService.getLecturerByIdOrThrowException(newHospitationDTO.secondReviewer());
         var classes = newHospitationDTO.classIds().stream().
                 map(universityClassService::getUniversityClassByIdOrThrowException)
@@ -45,6 +45,13 @@ public class HospitationService {
         }
         var hospitation = new Hospitation(hospitatedLecturer, wzhzReviewer, secondReviewer, classes);
         return hospitationRepository.save(hospitation);
+    }
+
+    private void throwExceptionIfWzhzReviewerIsNotInsideWzhz(Lecturer wzhzReviewer) {
+        if (!wzhzReviewer.isInWZHZ()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Given wzhz reviewer with id '%s' is not in wzhz", wzhzReviewer.getLecturerId()));
+        }
     }
 
     private void throwExceptionIfAnyOfLecturersAreTheSame(int lecturer, int wzhzReviewer, int secondReviewer) {
@@ -70,20 +77,9 @@ public class HospitationService {
         return !new HashSet<>(hospitatedLecturer.getClasses()).containsAll(classes);
     }
 
-    public List<LecturerWithCoursesDTO> getHospitationLecturersForReviewer(int reviewerId) {
+    public List<Hospitation> getHospitationLecturersForReviewer(int reviewerId) {
         lecturerService.getLecturerByIdOrThrowException(reviewerId);
-        List<Hospitation> hospitations = hospitationRepository
+        return hospitationRepository
                 .findByWzhzReviewer_LecturerIdOrSecondReviewer_LecturerId(reviewerId, reviewerId);
-        return hospitations.stream()
-                .map(this::getHospitatedLecturerWithCoursesDTO)
-                .toList();
-    }
-
-    private LecturerWithCoursesDTO getHospitatedLecturerWithCoursesDTO(Hospitation hospitation) {
-        return new LecturerWithCoursesDTO(hospitation.getHospitatedLecturer().toDTO(),
-                hospitation.getClassesForHospitation()
-                        .stream()
-                        .map(uniClass -> uniClass.getCourse().toDTO())
-                        .toList());
     }
 }

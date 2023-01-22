@@ -35,8 +35,9 @@ public class HospitationController {
     @Operation(summary = "Add new hospitation",
             description = """
                     Add new hospitation to schedule.
-                    \nReturns 404 if any of lecturers don't exist.
+                    \nReturns 404 if any of lecturers doesn't exist.
                     \nReturns 400 if any of classes is not conducted by hospitated lecturer
+                    \nReturns 400 wzhz reviewer is not from wzhz
                     \nReturns 400 if lecturer or any of the reviewers are the same person""")
     public ResponseEntity<HospitationDTO> addNewHospitation(@Valid @RequestBody NewHospitationDTO newHospitationDTO) {
         var hospitation = hospitationService.addNewHospitation(newHospitationDTO);
@@ -46,6 +47,18 @@ public class HospitationController {
     @GetMapping("/reviewers/{reviewerId}/lecturers")
     @Operation(summary = "Get hospitation lecturers for reviewer", description = "Get hospitation lecturers for reviewer")
     public ResponseEntity<List<LecturerWithCoursesDTO>> getHospitationLecturersForReviewer(@PathVariable int reviewerId) {
-        return ResponseEntity.ok(hospitationService.getHospitationLecturersForReviewer(reviewerId));
+        return ResponseEntity.ok(
+                hospitationService.getHospitationLecturersForReviewer(reviewerId)
+                        .stream()
+                        .map(this::getHospitatedLecturerWithCoursesDTO)
+                        .toList());
+    }
+
+    private LecturerWithCoursesDTO getHospitatedLecturerWithCoursesDTO(Hospitation hospitation) {
+        return new LecturerWithCoursesDTO(hospitation.getHospitatedLecturer().toDTO(),
+                hospitation.getClassesForHospitation()
+                        .stream()
+                        .map(uniClass -> uniClass.getCourse().toDTO())
+                        .toList());
     }
 }
