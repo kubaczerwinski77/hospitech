@@ -1,4 +1,4 @@
-import { SmallAddIcon } from "@chakra-ui/icons";
+import { SearchIcon, SmallAddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -155,11 +155,15 @@ const Schedule = () => {
           align={"center"}
           justifyContent={"center"}
           height={"300px"}
-          gap={"10px"}
+          margin={"50px"}
+          gap={"20px"}
         >
-          <Text fontSize={"2xl"}>
-            W harmonogramie nie ma żadnych hospitacji
-          </Text>
+          <SearchIcon boxSize={100} opacity={0.2} />
+          <Flex justify={"center"} align={"center"} maxW={"400px"}>
+            <Text fontSize={"2xl"} align={"center"}>
+              W harmonogramie nie ma żadnych hospitacji
+            </Text>
+          </Flex>
           <Button
             colorScheme={"teal"}
             leftIcon={<SmallAddIcon boxSize={6} />}
