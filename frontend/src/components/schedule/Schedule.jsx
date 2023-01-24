@@ -1,14 +1,26 @@
 import React from "react";
-import { Flex, HStack, Spinner, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  SkeletonText,
+  Text,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { BASE_URL, PREFIX } from "../../config";
 import { useEffect } from "react";
 import { mapDayOfTheWeek, mapDegree } from "../../utils";
+import { AddIcon } from "@chakra-ui/icons";
+import AddHospitationModal from "./AddHospitationModal";
 
 const Schedule = () => {
   const [hospitations, setHospitations] = useState([]);
   const [status, setStatus] = useState();
   const [error, setError] = useState();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   useEffect(() => {
     const manageRequest = async () => {
@@ -28,7 +40,19 @@ const Schedule = () => {
   }, []);
 
   if (status === "loading") {
-    return <Spinner />;
+    return (
+      <VStack m={10}>
+        <Box m="auto" padding="6" borderRadius={5} bg="white" width="80%">
+          <SkeletonText mt="4" noOfLines={3} spacing="4" skeletonHeight="2" />
+        </Box>
+        <Box m="auto" padding="6" borderRadius={5} bg="white" width="80%">
+          <SkeletonText mt="4" noOfLines={3} spacing="4" skeletonHeight="2" />
+        </Box>
+        <Box m="auto" padding="6" borderRadius={5} bg="white" width="80%">
+          <SkeletonText mt="4" noOfLines={3} spacing="4" skeletonHeight="2" />
+        </Box>
+      </VStack>
+    );
   }
 
   if (status === "error") {
@@ -110,7 +134,18 @@ const Schedule = () => {
             </HStack>
           )
         )}
+        <Flex w="1400px">
+          <Button
+            rightIcon={<AddIcon />}
+            colorScheme="teal"
+            marginLeft="auto"
+            onClick={onOpen}
+          >
+            Add
+          </Button>
+        </Flex>
       </VStack>
+      <AddHospitationModal isOpen={isOpen} onClose={onClose} />
     </>
   );
 };
