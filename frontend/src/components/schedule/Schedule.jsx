@@ -1,260 +1,116 @@
-import { SearchIcon, SmallAddIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  HStack,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Select,
-  Text,
-  useDisclosure,
-  useToast,
-  VStack,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
-import Headers from "./Headers";
-
-const dummyData = [
-  {
-    code: "INEU00405P",
-    name: "Zaawansowane metody programowania",
-    place: "111 C-3",
-    date: "Czwartek TP+1/2 09:15-11:00",
-    teacher: "Dr. inż. Jacek Cichosz",
-    inspectors: [
-      "prof. dr hab. inż. Krzysztof Walkowiak",
-      "dr hab. inż. Mariusz Uchroński (WZHZ)",
-    ],
-  },
-  {
-    code: "INEU00405A",
-    name: "Zaawansowane metody programowania",
-    place: "111 C-3",
-    date: "Czwartek TP+1/2 09:15-11:00",
-    teacher: "Dr. inż. Jacek Cichosz",
-    inspectors: [
-      "prof. dr hab. inż. Krzysztof Walkowiak",
-      "dr hab. inż. Mariusz Uchroński (WZHZ)",
-    ],
-  },
-  {
-    code: "INEU00405B",
-    name: "Aaawansowane metody programowania",
-    place: "111 C-3",
-    date: "Czwartek TP+1/2 09:15-11:00",
-    teacher: "Dr. inż. Jacek Cichosz",
-    inspectors: [
-      "prof. dr hab. inż. Krzysztof Walkowiak",
-      "dr hab. inż. Mariusz Uchroński (WZHZ)",
-    ],
-  },
-];
-
-const dummySelect = [
-  "Arkadiusz Glapiński",
-  "Marek Tańcula",
-  "James Bond",
-  "Franek Kimono",
-];
-
-const ScheduleItem = ({ code, name, place, date, teacher, inspectors }) => (
-  <HStack
-    bg={"gray.200"}
-    spacing={2}
-    margin={1}
-    p={3}
-    align={"center"}
-    borderRadius={5}
-  >
-    <Flex w={"200px"}>{code}</Flex>
-    <Flex w={"300px"}>{name}</Flex>
-    <Flex w={"200px"}>{place}</Flex>
-    <Flex w={"200px"}>{date}</Flex>
-    <Flex w={"250px"}>{teacher}</Flex>
-    <Flex w={"350px"} direction="column">
-      <Text>{inspectors[0]}</Text>
-      <Text>{inspectors[1]}</Text>
-    </Flex>
-  </HStack>
-);
+import React from "react";
+import { Flex, HStack, Spinner, Text, VStack } from "@chakra-ui/react";
+import { useState } from "react";
+import { BASE_URL, PREFIX } from "../../config";
+import { useEffect } from "react";
+import { mapDayOfTheWeek, mapDegree } from "../../utils";
 
 const Schedule = () => {
-  const toast = useToast();
-  const [data] = useState(dummyData);
-  const [form, setForm] = useState({
-    teacher: { value: null, err: false },
-    inspector1: { value: null, err: false },
-    inspector2: { value: null, err: false },
-  });
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [hospitations, setHospitations] = useState([]);
+  const [status, setStatus] = useState();
+  const [error, setError] = useState();
 
-  const handleFormSubmit = () => {
-    if (!form.teacher.value) {
-      setForm({ ...form, teacher: { ...form.teacher, err: true } });
-      return;
-    }
-    if (!form.inspector1.value) {
-      setForm({ ...form, inspector1: { ...form.inspector1, err: true } });
-      return;
-    }
-    if (!form.inspector2.value) {
-      setForm({ ...form, inspector2: { ...form.inspector2, err: true } });
-      return;
-    }
+  useEffect(() => {
+    const manageRequest = async () => {
+      setStatus("loading");
+      try {
+        const res = await fetch(`${BASE_URL}${PREFIX}/hospitations`);
+        const data = await res.json();
+        setHospitations(data);
+        setStatus("success");
+      } catch (e) {
+        setStatus("failed");
+        setError(e);
+      }
+    };
 
-    onClose();
-    toast({
-      title: "Operacja powiodła się",
-      description: "Pomyślnie utworzono hospitację",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-      position: "bottom-left",
-    });
-  };
+    manageRequest();
+  }, []);
+
+  if (status === "loading") {
+    return <Spinner />;
+  }
+
+  if (status === "error") {
+    return <>{error}</>;
+  }
 
   return (
     <>
-      {!!data.length ? (
-        <Flex direction={"column"} paddingX={10} marginTop={1}>
-          <Headers />
-          {data.map((item, i) => (
-            <ScheduleItem
-              key={i}
-              code={item.code}
-              name={item.name}
-              place={item.place}
-              date={item.date}
-              teacher={item.teacher}
-              inspectors={item.inspectors}
-            />
-          ))}
-          <Flex justifyContent={"flex-end"} marginTop={1} marginRight={1}>
-            <Box
-              as="button"
-              marginLeft={"auto"}
-              bg={"teal.500"}
-              borderRadius={5}
-            >
-              <SmallAddIcon boxSize={10} onClick={onOpen} color={"white"} />
-            </Box>
-          </Flex>
-        </Flex>
-      ) : (
-        <Flex
-          direction={"column"}
-          align={"center"}
-          justifyContent={"center"}
-          height={"300px"}
-          margin={"50px"}
-          gap={"20px"}
-        >
-          <SearchIcon boxSize={100} opacity={0.2} />
-          <Flex justify={"center"} align={"center"} maxW={"400px"}>
-            <Text fontSize={"2xl"} align={"center"}>
-              W harmonogramie nie ma żadnych hospitacji
-            </Text>
-          </Flex>
-          <Button
-            colorScheme={"teal"}
-            leftIcon={<SmallAddIcon boxSize={6} />}
-            onClick={onOpen}
-          >
-            Dodaj hospitację
-          </Button>
-        </Flex>
-      )}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Nowa hospitacja</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <VStack spacing={5}>
-              <FormControl
-                isRequired
-                isInvalid={form.teacher.err}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    teacher: { value: e.target.value, err: !e },
-                  })
-                }
-              >
-                <FormLabel>Hospitowany</FormLabel>
-                <Select placeholder="Wybierz osobę">
-                  <option value={dummySelect[0]}>{dummySelect[0]}</option>
-                  <option value={dummySelect[1]}>{dummySelect[1]}</option>
-                  <option value={dummySelect[2]}>{dummySelect[2]}</option>
-                  <option value={dummySelect[3]}>{dummySelect[3]}</option>
-                </Select>
-                <FormErrorMessage>
-                  Wybór hospitowanego jest wymagany
-                </FormErrorMessage>
-              </FormControl>
-              <FormControl
-                isRequired
-                isInvalid={form.inspector1.err}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    inspector1: { value: e.target.value, err: !e },
-                  })
-                }
-              >
-                <FormLabel>Hospitujący 1 (WZHZ)</FormLabel>
-                <Select placeholder="Wybierz osobę">
-                  <option value={dummySelect[0]}>{dummySelect[0]}</option>
-                  <option value={dummySelect[1]}>{dummySelect[1]}</option>
-                  <option value={dummySelect[2]}>{dummySelect[2]}</option>
-                  <option value={dummySelect[3]}>{dummySelect[3]}</option>
-                </Select>
-                <FormErrorMessage>
-                  Wybór hospitującego jest wymagany
-                </FormErrorMessage>
-              </FormControl>
-              <FormControl
-                isRequired
-                isInvalid={form.inspector2.err}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    inspector2: { value: e.target.value, err: !e },
-                  })
-                }
-              >
-                <FormLabel>Hospitujący 2</FormLabel>
-                <Select placeholder="Wybierz osobę">
-                  <option value={dummySelect[0]}>{dummySelect[0]}</option>
-                  <option value={dummySelect[1]}>{dummySelect[1]}</option>
-                  <option value={dummySelect[2]}>{dummySelect[2]}</option>
-                  <option value={dummySelect[3]}>{dummySelect[3]}</option>
-                </Select>
-                <FormErrorMessage>
-                  Wybór hospitującego jest wymagany
-                </FormErrorMessage>
-              </FormControl>
-            </VStack>
-          </ModalBody>
-          <ModalFooter justifyContent={"center"}>
-            <Button colorScheme="teal" mr={3} onClick={handleFormSubmit}>
-              Dodaj hospitację
-            </Button>
-            <Button variant="ghost" onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <VStack>
+        <HStack gap="10px" paddingTop={5}>
+          <Text as="b" w="100px">
+            Kod:
+          </Text>
+          <Text as="b" w="300px">
+            Nazwa:
+          </Text>
+          <Text as="b" w="100px">
+            Miejsce:
+          </Text>
+          <Text as="b" w="150px">
+            Termin:
+          </Text>
+          <Text as="b" w="200px">
+            Hospitowany:
+          </Text>
+          <Text as="b" w="400px">
+            Hospitujący:
+          </Text>
+        </HStack>
+        {hospitations.map(
+          ({
+            hospitationId,
+            classesForHospitation,
+            hospitatedLecturer,
+            wzhzReviewer,
+            secondReviewer,
+          }) => (
+            <HStack key={hospitationId} p={5} borderRadius={5} bg="gray.200">
+              {classesForHospitation.map(
+                ({
+                  classId,
+                  course,
+                  room,
+                  building,
+                  dayOfTheWeek,
+                  startTime,
+                  endTime,
+                }) => (
+                  <HStack key={classId} gap={"10px"}>
+                    <Text w={"100px"}>{course.code}</Text>
+                    <Text w={"300px"}>{course.name}</Text>
+                    <Text w={"100px"}>
+                      {room} {building}
+                    </Text>
+                    <Flex direction="column" w={"150px"}>
+                      <Text>{mapDayOfTheWeek[dayOfTheWeek]}</Text>
+                      <Text>
+                        {startTime} - {endTime}
+                      </Text>
+                    </Flex>
+                    <Text></Text>
+                  </HStack>
+                )
+              )}
+              <Text w={"200px"}>
+                {mapDegree[hospitatedLecturer.degree]}{" "}
+                {hospitatedLecturer.firstName} {hospitatedLecturer.lastName}
+              </Text>
+              <Flex direction="column">
+                <Text w={"400px"}>
+                  {mapDegree[wzhzReviewer.degree]} {wzhzReviewer.firstName}{" "}
+                  {wzhzReviewer.lastName} (WZHZ)
+                </Text>
+                <Text w={"400px"}>
+                  {mapDegree[secondReviewer.degree]} {secondReviewer.firstName}{" "}
+                  {secondReviewer.lastName}
+                </Text>
+              </Flex>
+            </HStack>
+          )
+        )}
+      </VStack>
     </>
   );
 };

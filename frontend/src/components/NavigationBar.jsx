@@ -8,8 +8,6 @@ const NavigationBar = () => {
   const location = useLocation();
   const { pathname } = location;
 
-  console.log(pathname);
-
   return (
     <Flex bg={"teal.500"} h={"80px"} align={"center"} p={"0 32px"}>
       <CalendarIcon margin={"0 8px 0 32px"} boxSize={6} />
