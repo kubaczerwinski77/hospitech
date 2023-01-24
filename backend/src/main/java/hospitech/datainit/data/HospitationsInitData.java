@@ -28,7 +28,8 @@ public class HospitationsInitData {
                         List.of(universityClassesRepository.findByClassId(15)), null),
                 new Hospitation(0, true, HospitationStatus.PLANNED, lecturerRepository.getReferenceById(3),
                         lecturerRepository.getReferenceById(13), lecturerRepository.getReferenceById(2),
-                        List.of(universityClassesRepository.findByClassId(5)), null)
+                        List.of(universityClassesRepository.findByClassId(5), universityClassesRepository.findByClassId(16)),
+                        null)
         );
     }
 }
