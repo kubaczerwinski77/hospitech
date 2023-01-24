@@ -91,32 +91,34 @@ const Schedule = () => {
             secondReviewer,
           }) => (
             <HStack key={hospitationId} p={5} borderRadius={5} bg="gray.200">
-              {classesForHospitation.map(
-                ({
-                  classId,
-                  course,
-                  room,
-                  building,
-                  dayOfTheWeek,
-                  startTime,
-                  endTime,
-                }) => (
-                  <HStack key={classId} gap={"10px"}>
-                    <Text w={"100px"}>{course.code}</Text>
-                    <Text w={"300px"}>{course.name}</Text>
-                    <Text w={"100px"}>
-                      {room} {building}
-                    </Text>
-                    <Flex direction="column" w={"150px"}>
-                      <Text>{mapDayOfTheWeek[dayOfTheWeek]}</Text>
-                      <Text>
-                        {startTime} - {endTime}
+              {classesForHospitation
+                .slice(0, 1)
+                .map(
+                  ({
+                    classId,
+                    course,
+                    room,
+                    building,
+                    dayOfTheWeek,
+                    startTime,
+                    endTime,
+                  }) => (
+                    <HStack key={classId} gap={"10px"}>
+                      <Text w={"100px"}>{course.code}</Text>
+                      <Text w={"300px"}>{course.name}</Text>
+                      <Text w={"100px"}>
+                        {room} {building}
                       </Text>
-                    </Flex>
-                    <Text></Text>
-                  </HStack>
-                )
-              )}
+                      <Flex direction="column" w={"150px"}>
+                        <Text>{mapDayOfTheWeek[dayOfTheWeek]}</Text>
+                        <Text>
+                          {startTime} - {endTime}
+                        </Text>
+                      </Flex>
+                      <Text></Text>
+                    </HStack>
+                  )
+                )}
               <Text w={"200px"}>
                 {mapDegree[hospitatedLecturer.degree]}{" "}
                 {hospitatedLecturer.firstName} {hospitatedLecturer.lastName}
