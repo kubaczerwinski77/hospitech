@@ -102,7 +102,7 @@ const AddHospitationModal = ({ isOpen, onClose }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay />
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
       <ModalContent>
         <ModalHeader>Dodaj hospitację</ModalHeader>
         <ModalCloseButton />
