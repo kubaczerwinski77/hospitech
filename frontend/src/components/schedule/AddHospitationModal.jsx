@@ -46,7 +46,7 @@ const AddHospitationModal = ({ isOpen, onClose }) => {
         toast({
           title: "Request failed",
           description: data.message,
-          position: "top",
+          position: "bottom-left",
           status: "error",
           duration: 3000,
           isClosable: true,
@@ -55,7 +55,7 @@ const AddHospitationModal = ({ isOpen, onClose }) => {
         toast({
           title: "Dodawanie powiodło się",
           description: "Pomyślnie dodano hospitację",
-          position: "top",
+          position: "bottom-left",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -249,7 +249,7 @@ const AddHospitationModal = ({ isOpen, onClose }) => {
                 </Button>
                 <Button
                   isLoading={props.isSubmitting}
-                  colorScheme="teal"
+                  colorScheme="green"
                   type="submit"
                 >
                   Stwórz

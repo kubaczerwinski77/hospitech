@@ -79,7 +79,7 @@ const Schedule = () => {
             </Text>
             <Button
               rightIcon={<AddIcon />}
-              colorScheme="teal"
+              colorScheme="green"
               size="sm"
               onClick={onOpen}
             >
@@ -128,8 +128,9 @@ const Schedule = () => {
                   <HStack
                     key={hospitationId}
                     p={5}
-                    borderRadius={5}
+                    borderRadius={10}
                     bg="gray.200"
+                    shadow="md"
                   >
                     {classesForHospitation
                       .slice(0, 1)
@@ -182,7 +183,7 @@ const Schedule = () => {
           <Flex w="1380px" m="auto">
             <Button
               rightIcon={<AddIcon />}
-              colorScheme="teal"
+              colorScheme="green"
               marginLeft="auto"
               onClick={onOpen}
             >
