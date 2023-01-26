@@ -63,7 +63,8 @@ const NavigationBar = () => {
         <Button
           variant="link"
           color="gray.800"
-          fontWeight={pathname === "/schedule" && "bold"}
+          fontWeight={"normal"}
+          textShadow={pathname === "/schedule" && "1px 0px 0px black"}
           onClick={() => navigate("/schedule")}
         >
           Harmonogram
