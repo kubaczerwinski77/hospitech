@@ -37,7 +37,7 @@ public class LecturerService {
         return lecturerRepository.findById(lecturerId).orElseThrow(
                 () -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        String.format("Lecturer with id '%d' doesn't exist", lecturerId))
+                        String.format("Prowadzący o id '%d' nie istnieje", lecturerId))
         );
     }
 }

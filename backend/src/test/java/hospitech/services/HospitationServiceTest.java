@@ -71,7 +71,7 @@ class HospitationServiceTest {
                 hospitatedLecturer.getLecturerId(), hospitatedLecturer.getLecturerId());
 
         var exception = assertThrows(ResponseStatusException.class, () -> hospitationService.addNewHospitation(newHospitationDTO));
-        softly.assertThat(exception.getReason()).isEqualTo("Lecturer cannot be reviewed by himself");
+        softly.assertThat(exception.getReason()).isEqualTo("Prowadzący nie może zostać hospitowany przez samego siebie");
         softly.assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
         verify(hospitationRepository, never()).save(any());
@@ -98,7 +98,7 @@ class HospitationServiceTest {
         when(hospitationRepository.existsByHospitatedLecturer_LecturerId(hospitatedLecturer.getLecturerId())).thenReturn(true);
 
         var exception = assertThrows(ResponseStatusException.class, () -> hospitationService.addNewHospitation(newHospitationDTO));
-        softly.assertThat(exception.getReason()).isEqualTo("Given hospitated lecturer with id '1' already has hospitation planned");
+        softly.assertThat(exception.getReason()).isEqualTo("Podany hospitowany o id '1' posiada już zaplanowaną hospitację");
         softly.assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
         verify(lecturerService).getLecturerByIdOrThrowException(hospitatedLecturer.getLecturerId());
@@ -125,7 +125,7 @@ class HospitationServiceTest {
         when(lecturerService.getLecturerByIdOrThrowException(2)).thenReturn(createTestLecturer(2, false));
 
         var exception = assertThrows(ResponseStatusException.class, () -> hospitationService.addNewHospitation(newHospitationDTO));
-        softly.assertThat(exception.getReason()).isEqualTo("Given wzhz reviewer with id '2' is not in wzhz");
+        softly.assertThat(exception.getReason()).isEqualTo("Podany hospitujący z komisji WZHZ o id '2' nie należy do komisji WZHZ");
         softly.assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
         verify(lecturerService, never()).getLecturerByIdOrThrowException(secondReviewer.getLecturerId());
@@ -165,7 +165,7 @@ class HospitationServiceTest {
         hospitatedLecturer.setClasses(List.of());
 
         var exception = assertThrows(ResponseStatusException.class, () -> hospitationService.addNewHospitation(newHospitationDTO));
-        softly.assertThat(exception.getReason()).isEqualTo("Given classes are not conducted by hospitated lecturer");
+        softly.assertThat(exception.getReason()).isEqualTo("Podane zajęcia nie są przeprowadzane przez hospitowanego");
         softly.assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
         verify(hospitationRepository, never()).save(any());
