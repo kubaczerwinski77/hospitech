@@ -41,7 +41,7 @@ public class HospitationService {
                 map(universityClassService::getUniversityClassByIdOrThrowException)
                 .toList();
         if (areClassesConductedByLecturer(hospitatedLecturer, classes)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Given classes are not conducted by hospitated lecturer");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Podane zajęcia nie są przeprowadzane przez hospitowanego");
         }
         var hospitation = new Hospitation(hospitatedLecturer, wzhzReviewer, secondReviewer, classes);
         return hospitationRepository.save(hospitation);
@@ -50,17 +50,17 @@ public class HospitationService {
     private void throwExceptionIfWzhzReviewerIsNotInsideWzhz(Lecturer wzhzReviewer) {
         if (!wzhzReviewer.isInWZHZ()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("Given wzhz reviewer with id '%s' is not in wzhz", wzhzReviewer.getLecturerId()));
+                    String.format("Podany hospitujący z komisji WZHZ o id '%d' nie należy do komisji WZHZ", wzhzReviewer.getLecturerId()));
         }
     }
 
     private void throwExceptionIfAnyOfLecturersAreTheSame(int lecturer, int wzhzReviewer, int secondReviewer) {
         if (lecturer == wzhzReviewer || lecturer == secondReviewer) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Lecturer cannot be reviewed by himself");
+                    "Prowadzący nie może zostać hospitowany przez samego siebie");
         } else if (wzhzReviewer == secondReviewer) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Wzhz reviewer and second reviewer cannot be the same person");
+                    "Hospitujący z komisji WZHZ oraz drugi hospitujący nie mogą być tą samą osobą");
         }
     }
 
@@ -68,7 +68,7 @@ public class HospitationService {
         if (hospitationRepository.existsByHospitatedLecturer_LecturerId(lecturerId)) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    String.format("Given hospitated lecturer with id '%d' already has hospitation planned", lecturerId)
+                    String.format("Podany hospitowany o id '%d' posiada już zaplanowaną hospitację", lecturerId)
             );
         }
     }
