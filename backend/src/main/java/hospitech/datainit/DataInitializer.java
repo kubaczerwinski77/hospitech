@@ -29,6 +29,10 @@ public class DataInitializer {
     }
 
     @PostConstruct
+    void init() {
+        fillData();
+    }
+
     @Transactional
     void fillData() {
         courseRepository.saveAll(CoursesInitData.get());

@@ -11,8 +11,8 @@ import java.util.List;
 
 @Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "hospitations")
 public class Hospitation {
     @Id
@@ -32,6 +32,7 @@ public class Hospitation {
     @OneToMany
     private List<UniversityClass> classesForHospitation;
     @OneToOne
+    @JoinColumn(name = "protocol_id", referencedColumnName = "protocolId")
     private HospitationProtocol protocol;
 
     public Hospitation(Lecturer hospitatedLecturer, Lecturer wzhzReviewer, Lecturer secondReviewer, List<UniversityClass> classesForHospitation) {
@@ -47,5 +48,12 @@ public class Hospitation {
         return new HospitationDTO(hospitationId, hospitatedLecturer.toDTO(),
                 wzhzReviewer.toDTO(), secondReviewer.toDTO(),
                 classesForHospitation.stream().map(UniversityClass::toDTO).toList());
+    }
+
+    public void setProtocol(final HospitationProtocol protocol) {
+        if(protocol != null) {
+            protocol.setHospitation(this);
+        }
+        this.protocol = protocol;
     }
 }

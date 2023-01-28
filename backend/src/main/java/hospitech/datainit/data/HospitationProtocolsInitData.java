@@ -1,6 +1,7 @@
 package hospitech.datainit.data;
 
 import hospitech.entity.HospitationProtocol;
+import hospitech.entity.enums.Grade;
 import hospitech.repository.HospitationProtocolQuestionsRepository;
 
 import java.time.LocalDate;
@@ -12,10 +13,11 @@ public class HospitationProtocolsInitData {
 
     public static List<HospitationProtocol> get(final HospitationProtocolQuestionsRepository repository) {
         return List.of(
-                new HospitationProtocol(0, repository.getReferenceById(1), null, 5,
+                new HospitationProtocol(0, repository.getReferenceById(1), null, Grade.DOBRA,
                         "Wszystko zostało przeprowadzone wzorowo", "Przygotowac rzutnik przed zajeciami", true,
                         LocalDateTime.of(LocalDate.of(2023, 1, 14), LocalTime.of(12, 35)),
-                        LocalDateTime.of(LocalDate.of(2023, 1, 13), LocalTime.of(17, 0)))
+                        LocalDateTime.of(LocalDate.of(2023, 1, 13), LocalTime.of(17, 0)),
+                        null)
         );
     }
 }

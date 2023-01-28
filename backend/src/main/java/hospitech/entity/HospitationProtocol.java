@@ -1,17 +1,19 @@
 package hospitech.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import hospitech.dto.HospitationProtocolDTO;
+import hospitech.entity.enums.Grade;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "hospitation_protocols")
 public class HospitationProtocol {
@@ -22,7 +24,8 @@ public class HospitationProtocol {
     private HospitationProtocolQuestions questions;
     private String environment; // jesli zdalne
     @NotNull
-    private int grade;
+    @Enumerated(value = EnumType.STRING)
+    private Grade grade;
     @NotNull
     private String gradeExplanation;
     private String commentsAndRecommendations;
@@ -31,9 +34,16 @@ public class HospitationProtocol {
     private LocalDateTime signatureDate;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime protocolCreationDate;
+    @OneToOne(mappedBy = "protocol", fetch = FetchType.LAZY)
+    private Hospitation hospitation;
 
     @PrePersist
     protected void onCreate() {
         this.protocolCreationDate = LocalDateTime.now();
+    }
+
+    public HospitationProtocolDTO toDTO() {
+        return new HospitationProtocolDTO(protocolId, questions, environment, grade, gradeExplanation,
+                commentsAndRecommendations, signed, signatureDate, protocolCreationDate);
     }
 }
