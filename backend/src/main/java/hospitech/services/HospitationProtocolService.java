@@ -41,7 +41,8 @@ public class HospitationProtocolService {
     public HospitationProtocol saveProtocol(final NewHospitationProtocolDTO newProtocol, final int hospitationId) {
 
         final Hospitation hospitation = hospitationRepository.getHospitationByHospitationId(hospitationId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Hospitacja o id: '%d' nie istnieje", hospitationId)));
 
         throwExceptionIfHospitationAlreadyHasProtocol(hospitation);
 
