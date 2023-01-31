@@ -29,6 +29,10 @@ public class HospitationService {
         return hospitationRepository.findAll();
     }
 
+    public List<Hospitation> getHospitationWithProtocol() {
+        return hospitationRepository.findAllByProtocolIsNotNull();
+    }
+
     public Hospitation addNewHospitation(NewHospitationDTO newHospitationDTO) {
         throwExceptionIfAnyOfLecturersAreTheSame(
                 newHospitationDTO.hospitatedLecturer(), newHospitationDTO.wzhzReviewer(), newHospitationDTO.secondReviewer());

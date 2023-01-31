@@ -12,4 +12,6 @@ public interface HospitationRepository extends JpaRepository<Hospitation, Intege
     List<Hospitation> findByWzhzReviewer_LecturerIdOrSecondReviewer_LecturerId(int lecturerId, int lecturerId1);
 
     Optional<Hospitation> getHospitationByHospitationId(final int id);
+
+    List<Hospitation> findAllByProtocolIsNotNull();
 }

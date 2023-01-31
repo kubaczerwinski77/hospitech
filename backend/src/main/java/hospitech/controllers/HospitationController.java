@@ -27,10 +27,12 @@ public class HospitationController {
 
     @GetMapping
     @Operation(summary = "Get hospitations", description = "Get all hospitations")
-    public ResponseEntity<List<HospitationDTO>> getHospitations() {
-        return ResponseEntity.ok(
-                hospitationService.getHospitations()
-                        .stream()
+    @Parameter(name = "hasProtocol", description = "If true returns all hospiation with protocol")
+    public ResponseEntity<List<HospitationDTO>> getHospitations(@RequestParam(required = false,
+            defaultValue = "false", name = "hasProtocol") final String hasProtocol) {
+        final List<Hospitation> hospitations = hasProtocol.equals("true") ?
+                hospitationService.getHospitationWithProtocol() : hospitationService.getHospitations();
+        return ResponseEntity.ok(hospitations.stream()
                         .map(Hospitation::toDTO)
                         .toList());
     }
