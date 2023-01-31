@@ -1,12 +1,13 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Schedule from "./components/schedule/Schedule";
 import NavigationBar from "./components/NavigationBar";
-import Protocols from "./components/Protocols";
 import AddWzhz from "./components/wzhz/AddWzhz";
 import BrowseWzhz from "./components/wzhz/BrowseWzhz";
 import LecturersList from "./components/lecturer/LecturersList";
 import LecturersPlan from "./components/lecturer/LecturersPlan";
 import { ChakraProvider } from "@chakra-ui/react";
+import AddProtocol from "./components/protocol/AddProtocol";
+import BrowseProtocols from "./components/protocol/BrowseProtocols";
 
 function App() {
   return (
@@ -25,14 +26,6 @@ function App() {
           }
         />
         <Route
-          path="/protocols"
-          element={
-            <ChakraProvider>
-              <Protocols />
-            </ChakraProvider>
-          }
-        />
-        <Route
           path="/wzhz/add"
           element={
             <ChakraProvider>
@@ -45,6 +38,22 @@ function App() {
           element={
             <ChakraProvider>
               <BrowseWzhz />
+            </ChakraProvider>
+          }
+        />
+        <Route
+          path="/protocols/add"
+          element={
+            <ChakraProvider>
+              <AddProtocol />
+            </ChakraProvider>
+          }
+        />
+        <Route
+          path="/protocols/browse"
+          element={
+            <ChakraProvider>
+              <BrowseProtocols />
             </ChakraProvider>
           }
         />

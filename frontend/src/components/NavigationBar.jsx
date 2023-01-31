@@ -78,14 +78,28 @@ const NavigationBar = () => {
         >
           Prowadzący
         </Button>
-        <Button
-          variant="link"
-          color="gray.800"
-          fontWeight={pathname === "/protocols" && "bold"}
-          onClick={() => navigate("/protocols")}
-        >
-          Protokoły
-        </Button>
+        <Menu>
+          <MenuButton
+            as={Link}
+            fontWeight={pathname.startsWith("/protocols") && "bold"}
+          >
+            Protokoły
+          </MenuButton>
+          <MenuList>
+            <MenuItem
+              onClick={() => navigate("/protocols/browse")}
+              icon={<SearchIcon />}
+            >
+              Przeglądaj
+            </MenuItem>
+            <MenuItem
+              onClick={() => navigate("/protocols/add")}
+              icon={<AddIcon />}
+            >
+              Stwórz
+            </MenuItem>
+          </MenuList>
+        </Menu>
         <Menu>
           <MenuButton
             as={Link}
