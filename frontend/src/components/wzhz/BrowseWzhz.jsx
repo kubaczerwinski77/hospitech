@@ -17,9 +17,11 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { BASE_URL, PREFIX } from "../../config";
 import { mapDegree } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 const BrowseWzhz = () => {
   const [wzhz, setWzhz] = useState([]);
+  const navigate = useNavigate();
 
   const fetchWzhz = async () => {
     const res = await fetch(`${BASE_URL}${PREFIX}/lecturers?wzhz=true`);
@@ -45,6 +47,7 @@ const BrowseWzhz = () => {
             w={"100%"}
             key={lecturerId}
             align={"center"}
+            _hover={{ bg: "green.50" }}
           >
             <Image
               fit="cover"
@@ -67,7 +70,12 @@ const BrowseWzhz = () => {
                   <Heading size={"md"}>{department}</Heading>
                 </Flex>
                 <Spacer />
-                <Flex bg={"red.500"} p={3} borderRadius={5}>
+                <Flex
+                  bg={"red.500"}
+                  p={3}
+                  borderRadius={5}
+                  _hover={{ cursor: "pointer" }}
+                >
                   <DeleteIcon color={"white"} />
                 </Flex>
               </HStack>
@@ -77,7 +85,12 @@ const BrowseWzhz = () => {
       </VStack>
       <Divider w="70%" m="auto" />
       <Flex w={"70%"} m="auto" p={3}>
-        <Button marginLeft="auto" colorScheme="green" rightIcon={<AddIcon />}>
+        <Button
+          marginLeft="auto"
+          colorScheme="green"
+          rightIcon={<AddIcon />}
+          onClick={() => navigate("/wzhz/add")}
+        >
           Dodaj członka
         </Button>
       </Flex>
