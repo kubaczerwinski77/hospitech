@@ -72,6 +72,15 @@ const NavigationBar = () => {
         <Button
           variant="link"
           color="gray.800"
+          fontWeight={"normal"}
+          textShadow={pathname.startsWith("/lecturers") && "1px 0px 0px black"}
+          onClick={() => navigate("/lecturers")}
+        >
+          Prowadzący
+        </Button>
+        <Button
+          variant="link"
+          color="gray.800"
           fontWeight={pathname === "/protocols" && "bold"}
           onClick={() => navigate("/protocols")}
         >

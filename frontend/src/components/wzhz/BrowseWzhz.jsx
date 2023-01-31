@@ -1,4 +1,4 @@
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import {
   Button,
   Card,
@@ -32,6 +32,28 @@ const BrowseWzhz = () => {
   useEffect(() => {
     fetchWzhz();
   }, []);
+
+  if (wzhz.length === 0) {
+    return (
+      <Flex justify="center" align="center" h="400px">
+        <VStack gap={"12px"}>
+          <WarningTwoIcon boxSize={12} color="gray.600" />
+          <Text w="300px" textAlign="center">
+            Aktualnie do komisji nie jest dodany żaden członek.
+          </Text>
+          <Button
+            rightIcon={<AddIcon />}
+            colorScheme="green"
+            size="sm"
+            onClick={() => navigate("/wzhz/add")}
+            marginBottom="200px"
+          >
+            Dodaj członka
+          </Button>
+        </VStack>
+      </Flex>
+    );
+  }
 
   return (
     <>

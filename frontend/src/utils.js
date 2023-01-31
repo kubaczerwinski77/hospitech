@@ -11,5 +11,16 @@ export const mapDayOfTheWeek = {
 export const mapDegree = {
   MGR_INZ: "mgr. inż.",
   DR: "dr. inż.",
-  PROF: "dr. hab.",
+  DR_HAB: "dr. hab.",
+  PROF: "prof.",
+};
+
+export const mapToDayOfMonth = {
+  MONDAY: 4,
+  TUESDAY: 5,
+  WEDNESDAY: 6,
+  THURSDAY: 7,
+  FRIDAY: 8,
+  SATURDAY: 9,
+  SUNDAY: 10,
 };
