@@ -1,8 +1,9 @@
 package hospitech.entity.enums;
 
 public enum Grade {
+    NIEWIADOMA,
     NEGATYWNA,
-    DOSTATEZCNA,
+    DOSTATECZNA,
     DOBRA,
     BARDZO_DOBRA,
     WZOROWA

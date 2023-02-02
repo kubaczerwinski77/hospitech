@@ -1,15 +1,19 @@
 package hospitech.entity;
 
+import hospitech.entity.enums.Grade;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "protocol_questions")
 public class HospitationProtocolQuestions {
     @Id
@@ -29,4 +33,22 @@ public class HospitationProtocolQuestions {
     @NotNull
     private boolean isContentInLineWithProgram; // tak, nie
     private String commentsOnClass;
+    @ElementCollection
+    private List<Grade> gradeQuestions;
+
+    public List<Grade> getGradeQuestions() {
+        if(gradeQuestions == null) {
+            gradeQuestions = new ArrayList();
+            for(int i = 0; i < 20; i++) {
+                gradeQuestions.add(Grade.NIEWIADOMA);
+            }
+            return gradeQuestions;
+        }
+        else if (gradeQuestions.size() < 20) {
+            while(gradeQuestions.size() != 20) {
+                gradeQuestions.add(Grade.NIEWIADOMA);
+            }
+        }
+        return gradeQuestions;
+    }
 }
