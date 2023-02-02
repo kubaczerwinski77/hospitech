@@ -8,6 +8,21 @@ export const mapDayOfTheWeek = {
   SUNDAY: "Niedziela",
 };
 
+export const mapDayOfTheWeekShort = {
+  MONDAY: "pon",
+  TUESDAY: "wt",
+  WEDNESDAY: "śr",
+  THURSDAY: "czw",
+  FRIDAY: "pt",
+  SATURDAY: "sob",
+  SUNDAY: "niedz",
+};
+
+export const mapProtocolAnswears = {
+  true: "Tak",
+  false: "Nie",
+};
+
 export const mapDegree = {
   MGR_INZ: "mgr. inż.",
   DR: "dr. inż.",

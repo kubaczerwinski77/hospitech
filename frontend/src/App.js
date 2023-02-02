@@ -8,6 +8,7 @@ import LecturersPlan from "./components/lecturer/LecturersPlan";
 import { ChakraProvider } from "@chakra-ui/react";
 import AddProtocol from "./components/protocol/AddProtocol";
 import BrowseProtocols from "./components/protocol/BrowseProtocols";
+import ProtocolDetails from "./components/protocol/ProtocolDetails";
 
 function App() {
   return (
@@ -54,6 +55,14 @@ function App() {
           element={
             <ChakraProvider>
               <BrowseProtocols />
+            </ChakraProvider>
+          }
+        />
+        <Route
+          path="/protocols/browse/:id"
+          element={
+            <ChakraProvider>
+              <ProtocolDetails />
             </ChakraProvider>
           }
         />

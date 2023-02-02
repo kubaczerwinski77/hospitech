@@ -33,8 +33,6 @@ const BrowseProtocols = () => {
     fetchHospitations();
   }, []);
 
-  console.log(hospitations);
-
   if (hospitations.length === 0) {
     return (
       <Flex justify="center" align="center" h="400px">
@@ -60,35 +58,55 @@ const BrowseProtocols = () => {
   return (
     <>
       <Flex w={"70%"} m="auto" p={3}>
-        <Heading size={"md"}>Członkowie komisji WZHZ:</Heading>
+        <Heading size={"md"}>Dostępne protokoły:</Heading>
       </Flex>
       <Divider w="70%" m="auto" />
-      <VStack h="750px" overflow="scroll" w="70%" m="auto" paddingTop={3}>
-        {hospitations.map(({ hospitatedLecturer }) => {
-          const { lecturerId, firstName, lastName, degree } =
-            hospitatedLecturer;
-          return (
-            <Card
-              direction="row"
-              variant="outline"
-              w={"100%"}
-              key={lecturerId}
-              align={"center"}
-              _hover={{ bg: "green.50" }}
-            >
-              <CardBody>
-                <HStack marginY={"auto"}>
-                  <Flex direction="column" basis="400px">
-                    <Text>Imie i nazwisko prowadzącego</Text>
-                    <Heading
-                      size={"md"}
-                    >{`${mapDegree[degree]} ${firstName} ${lastName}`}</Heading>
-                  </Flex>
-                </HStack>
-              </CardBody>
-            </Card>
-          );
-        })}
+      <VStack maxH="750px" overflow="scroll" w="70%" m="auto" paddingTop={3}>
+        {hospitations.map(
+          ({ hospitatedLecturer, classesForHospitation, hospitationId }) => {
+            const { lecturerId, firstName, lastName, degree } =
+              hospitatedLecturer;
+            const { course } = classesForHospitation[0];
+            return (
+              <Card
+                direction="row"
+                variant="outline"
+                w={"100%"}
+                key={lecturerId}
+                align={"center"}
+                _hover={{ bg: "green.50" }}
+              >
+                <CardBody>
+                  <HStack marginY={"auto"}>
+                    <Flex direction="column" basis="450px">
+                      <Text>Imie i nazwisko prowadzącego</Text>
+                      <Heading
+                        size={"md"}
+                      >{`${mapDegree[degree]} ${firstName} ${lastName}`}</Heading>
+                    </Flex>
+                    <Flex direction="column" basis="300px">
+                      <Text>Nazwa kursu</Text>
+                      <Heading size={"md"}>{course.name}</Heading>
+                    </Flex>
+                    <Flex direction="column" basis="200px">
+                      <Text>Kod kursu</Text>
+                      <Heading size={"md"}>{course.code}</Heading>
+                    </Flex>
+                    <Button
+                      colorScheme="gray"
+                      variant="outline"
+                      onClick={() =>
+                        navigate(`/protocols/browse/${hospitationId}`)
+                      }
+                    >
+                      Podgląd
+                    </Button>
+                  </HStack>
+                </CardBody>
+              </Card>
+            );
+          }
+        )}
       </VStack>
       <Divider w="70%" m="auto" />
       <Flex w={"70%"} m="auto" p={3}>
