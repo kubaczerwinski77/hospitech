@@ -92,8 +92,6 @@ const ProtocolDetails = () => {
     fetchProtocol();
   }, [id]);
 
-  console.log({ protocol, hospitation });
-
   const { classesForHospitation, hospitatedLecturer } = hospitation || {};
   const { degree, firstName, lastName } = hospitatedLecturer || {};
   const { building, course, room, startTime, dayOfTheWeek } =
